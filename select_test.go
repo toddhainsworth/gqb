@@ -1,8 +1,11 @@
 package gqb
 
-import "testing"
+import (
+	"testing"
+	"reflect"
+)
 
-var specificQuery = NewSelectQuery("person", []string{"name"})
+var specificQuery = NewSelectQuery("person", []string{"name", "age",})
 var allQuery = NewSelectQuery("person", []string{})
 
 func TestNewSelectQuery(t *testing.T) {
@@ -12,7 +15,7 @@ func TestNewSelectQuery(t *testing.T) {
 }
 
 func TestConstruct(t *testing.T) {
-	expected := "SELECT name FROM person;"
+	expected := "SELECT name,age FROM person;"
 
 	if str := specificQuery.Construct(); str != expected {
 		t.Errorf("Expected query to equal \"%s\" but got \"%s\"", expected, str)
@@ -22,5 +25,25 @@ func TestConstruct(t *testing.T) {
 
 	if str := allQuery.Construct(); str != expected {
 		t.Errorf("Expected query to equal \"%s\" but got \"%s\"", expected, str)
+	}
+}
+
+func TestWhere(t *testing.T) {
+	expectedConditions := map[string]map[string]string {
+		"name": map[string]string {
+			"eq": "Todd",
+		},
+		"gender": map[string]string {
+			"eq": "male",
+			"neq": "female",
+		},
+	}
+	query := NewSelectQuery("person", []string{ "name", "age", "gender" })
+	query.Where("name", map[string]string{ "eq": "Todd" })
+	query.Where("gender", map[string]string{ "eq": "male" })
+	query.Where("gender", map[string]string{ "neq": "female" })
+
+	if conditions := query.Conditions; !reflect.DeepEqual(conditions, expectedConditions) {
+		t.Errorf("Expected conditions to equal: %v but got %v", expectedConditions, conditions)
 	}
 }
