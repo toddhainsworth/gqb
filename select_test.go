@@ -1,15 +1,15 @@
 package gqb
 
 import (
-	"testing"
 	"reflect"
+	"testing"
 )
 
-var specificQuery = NewSelectQuery("person", []string{"name", "age",})
-var allQuery = NewSelectQuery("person", []string{})
+var specificQuery Query = NewSelectQuery("person", []string{"name", "age"})
+var allQuery Query = NewSelectQuery("person", []string{})
 
 func TestNewSelectQuery(t *testing.T) {
-	if column := specificQuery.Columns[0]; column != "name" {
+	if column := specificQuery.Columns()[0]; column != "name" {
 		t.Errorf("Expected first column to equal \"name\" but got \"%s\"", column)
 	}
 }
@@ -29,21 +29,21 @@ func TestConstruct(t *testing.T) {
 }
 
 func TestWhere(t *testing.T) {
-	expectedConditions := map[string]map[string]string {
-		"name": map[string]string {
+	expectedConditions := map[string]map[string]string{
+		"name": map[string]string{
 			"eq": "Todd",
 		},
-		"gender": map[string]string {
-			"eq": "male",
+		"gender": map[string]string{
+			"eq":  "male",
 			"neq": "female",
 		},
 	}
-	query := NewSelectQuery("person", []string{ "name", "age", "gender" })
-	query.Where("name", map[string]string{ "eq": "Todd" })
-	query.Where("gender", map[string]string{ "eq": "male" })
-	query.Where("gender", map[string]string{ "neq": "female" })
+	query := NewSelectQuery("person", []string{"name", "age", "gender"})
+	query.Where("name", map[string]string{"eq": "Todd"})
+	query.Where("gender", map[string]string{"eq": "male"})
+	query.Where("gender", map[string]string{"neq": "female"})
 
-	if conditions := query.Conditions; !reflect.DeepEqual(conditions, expectedConditions) {
+	if conditions := query.conditions; !reflect.DeepEqual(conditions, expectedConditions) {
 		t.Errorf("Expected conditions to equal: %v but got %v", expectedConditions, conditions)
 	}
 }

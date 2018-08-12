@@ -1,5 +1,8 @@
 package gqb
+
 // stub for builder struct
 
 // Builder
-type Builder struct {}
+type Builder struct {
+	query *Query
+}

@@ -3,5 +3,7 @@ package gqb
 type Query interface {
 	String() string
 	Construct() string
-	Conditions(string) map[string]string
+	Table() string
+	Columns() []string
+	Conditions() map[string]map[string]string
 }
