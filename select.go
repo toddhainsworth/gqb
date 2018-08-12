@@ -9,7 +9,7 @@ import (
 type SelectQuery struct {
 	Table      string
 	Columns    []string
-	Conditions map[string]map[string]string
+	Conditions map[string]map[string]string // TODO: condition structs?
 }
 
 // NewSelectQuery creates a SelectQuery with the given columns
