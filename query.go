@@ -1,6 +1,7 @@
 package gqb
 
 type Query interface {
-	ToString() string
+	String() string
+	Construct() string
 	Conditions(string) map[string]string
 }

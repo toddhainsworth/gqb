@@ -17,8 +17,14 @@ func NewSelectQuery(table string, columns []string) SelectQuery {
 	return SelectQuery { Table: table, Columns: columns }
 }
 
-// ToString returns the query as a usable string
-func (s SelectQuery) ToString() string {
+// String makes it to that SelectQuery satisfies the Stringer interface
+// by returning the query as a usable string
+func (s SelectQuery) String() string {
+	return s.Construct()
+}
+
+// Construct puts the columns, conditions and table name together to make the query
+func (s SelectQuery) Construct() string {
 	return fmt.Sprintf("SELECT %s FROM %s;", s.getColumns(), s.Table)
 }
 

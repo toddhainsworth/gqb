@@ -11,16 +11,16 @@ func TestNewSelectQuery(t *testing.T) {
 	}
 }
 
-func TestToString(t *testing.T) {
+func TestConstruct(t *testing.T) {
 	expected := "SELECT name FROM person;"
 
-	if str := specificQuery.ToString(); str != expected {
+	if str := specificQuery.Construct(); str != expected {
 		t.Errorf("Expected query to equal \"%s\" but got \"%s\"", expected, str)
 	}
 
 	expected = "SELECT * FROM person;"
 
-	if str := allQuery.ToString(); str != expected {
+	if str := allQuery.Construct(); str != expected {
 		t.Errorf("Expected query to equal \"%s\" but got \"%s\"", expected, str)
 	}
 }
